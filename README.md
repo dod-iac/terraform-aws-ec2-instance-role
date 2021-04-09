@@ -15,7 +15,7 @@ module "instance_role" {
     Automation  = "Terraform"
   }
 }
-```  
+```
 Creates an IAM role for a EC2 instance that can join a AWS Managed Microsoft AD.
 
 ```hcl
@@ -49,41 +49,44 @@ This project constitutes a work of the United States Government and is not subje
 
 | Name | Version |
 |------|---------|
-| terraform | >= 0.13 |
-| aws | ~> 3.0 |
+| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 0.13 |
+| <a name="requirement_aws"></a> [aws](#requirement\_aws) | ~> 3.0 |
 
 ## Providers
 
 | Name | Version |
 |------|---------|
-| aws | ~> 3.0 |
+| <a name="provider_aws"></a> [aws](#provider\_aws) | ~> 3.0 |
 
 ## Modules
 
-No Modules.
+No modules.
 
 ## Resources
 
-| Name |
-|------|
-| [aws_iam_policy_document](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document) |
-| [aws_iam_role](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role) |
-| [aws_iam_role_policy_attachment](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role_policy_attachment) |
-| [aws_partition](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/partition) |
+| Name | Type |
+|------|------|
+| [aws_iam_role.main](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role) | resource |
+| [aws_iam_role_policy_attachment.amazon_ec2_container_service_for_ec2_role](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role_policy_attachment) | resource |
+| [aws_iam_role_policy_attachment.amazon_ssm_directory_service_access](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role_policy_attachment) | resource |
+| [aws_iam_role_policy_attachment.amazon_ssm_managed_instance_core](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role_policy_attachment) | resource |
+| [aws_iam_policy_document.assume_role_policy](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document) | data source |
+| [aws_partition.current](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/partition) | data source |
 
 ## Inputs
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| allow\_seamless\_domain\_join | Allow instance to seamlessly join to your AWS Managed Microsoft AD directory. | `bool` | `false` | no |
-| assume\_role\_policy | The assume role policy for the AWS IAM role.  If blank, allows EC2 instances in the account to assume the role. | `string` | `""` | no |
-| name | The name of the AWS IAM role. | `string` | n/a | yes |
-| tags | Tags applied to the AWS IAM role. | `map(string)` | `{}` | no |
+| <a name="input_allow_ecs"></a> [allow\_ecs](#input\_allow\_ecs) | Allow instance to create or join an ECS cluster. | `bool` | `false` | no |
+| <a name="input_allow_seamless_domain_join"></a> [allow\_seamless\_domain\_join](#input\_allow\_seamless\_domain\_join) | Allow instance to seamlessly join to your AWS Managed Microsoft AD directory. | `bool` | `false` | no |
+| <a name="input_assume_role_policy"></a> [assume\_role\_policy](#input\_assume\_role\_policy) | The assume role policy for the AWS IAM role.  If blank, allows EC2 instances in the account to assume the role. | `string` | `""` | no |
+| <a name="input_name"></a> [name](#input\_name) | The name of the AWS IAM role. | `string` | n/a | yes |
+| <a name="input_tags"></a> [tags](#input\_tags) | Tags applied to the AWS IAM role. | `map(string)` | `{}` | no |
 
 ## Outputs
 
 | Name | Description |
 |------|-------------|
-| arn | The Amazon Resource Name (ARN) of the AWS IAM Role. |
-| name | The name of the AWS IAM Role. |
+| <a name="output_arn"></a> [arn](#output\_arn) | The Amazon Resource Name (ARN) of the AWS IAM Role. |
+| <a name="output_name"></a> [name](#output\_name) | The name of the AWS IAM Role. |
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->

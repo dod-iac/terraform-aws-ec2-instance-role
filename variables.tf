@@ -10,6 +10,12 @@ variable "allow_seamless_domain_join" {
   default     = false
 }
 
+variable "allow_ecs" {
+  type        = bool
+  description = "Allow instance to create or join an ECS cluster."
+  default     = false
+}
+
 variable "name" {
   type        = string
   description = "The name of the AWS IAM role."
