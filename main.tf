@@ -82,3 +82,9 @@ resource "aws_iam_role_policy_attachment" "amazon_ssm_directory_service_access" 
   role       = aws_iam_role.main.name
   policy_arn = format("arn:%s:iam::aws:policy/AmazonSSMDirectoryServiceAccess", data.aws_partition.current.partition)
 }
+
+resource "aws_iam_role_policy_attachment" "amazon_ec2_container_service_for_ec2_role" {
+  count      = var.allow_ecs ? 1 : 0
+  role       = aws_iam_role.main.name
+  policy_arn = format("arn:%s:iam::aws:policy/service-role/AmazonEC2ContainerServiceforEC2Role", data.aws_partition.current.partition)
+}
