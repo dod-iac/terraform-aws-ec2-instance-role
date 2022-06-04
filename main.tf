@@ -33,7 +33,24 @@
  * }
  * ```
  *
- * For more information see https://docs.aws.amazon.com/directoryservice/latest/admin-guide/launching_instance.html.
+ * For more information on joining AD domains see https://docs.aws.amazon.com/directoryservice/latest/admin-guide/launching_instance.html.
+ *
+ * Creates an IAM role to allow EC2 instance to be managed by EC2 Image Builder.
+ *
+ * ```hcl
+ * module "domain_instance_role" {
+ *   source = "dod-iac/ec2-instance-role/aws"
+ *
+ *   allow_image_builder = true
+ *   name = format("app-%s-image-builder-%s", var.application, var.environment)
+ *
+ *   tags  = {
+ *     Application = var.application
+ *     Environment = var.environment
+ *     Automation  = "Terraform"
+ *   }
+ * }
+ * ```
  *
  * ## Terraform Version
  *
@@ -72,7 +89,7 @@ resource "aws_iam_role" "main" {
 }
 
 resource "aws_iam_role_policy_attachment" "amazon_ssm_managed_instance_core" {
-  count      = var.allow_seamless_domain_join ? 1 : 0
+  count      = var.allow_seamless_domain_join || var.allow_image_builder ? 1 : 0
   role       = aws_iam_role.main.name
   policy_arn = format("arn:%s:iam::aws:policy/AmazonSSMManagedInstanceCore", data.aws_partition.current.partition)
 }
@@ -87,4 +104,16 @@ resource "aws_iam_role_policy_attachment" "amazon_ec2_container_service_for_ec2_
   count      = var.allow_ecs ? 1 : 0
   role       = aws_iam_role.main.name
   policy_arn = format("arn:%s:iam::aws:policy/service-role/AmazonEC2ContainerServiceforEC2Role", data.aws_partition.current.partition)
+}
+
+resource "aws_iam_role_policy_attachment" "ec2_instance_profile_for_image_builder" {
+  count      = var.allow_image_builder ? 1 : 0
+  role       = aws_iam_role.main.name
+  policy_arn = format("arn:%s:iam::aws:policy/EC2InstanceProfileForImageBuilder", data.aws_partition.current.partition)
+}
+
+resource "aws_iam_role_policy_attachment" "ec2_instance_profile_for_image_builder_ecr_container_builds" {
+  count      = var.allow_image_builder ? 1 : 0
+  role       = aws_iam_role.main.name
+  policy_arn = format("arn:%s:iam::aws:policy/EC2InstanceProfileForImageBuilderECRContainerBuilds", data.aws_partition.current.partition)
 }
