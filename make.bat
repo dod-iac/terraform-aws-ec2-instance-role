@@ -1,5 +1,12 @@
 @echo off
 
+rem # =================================================================
+rem #
+rem # Work of the U.S. Department of Defense, Defense Digital Service.
+rem # Released as open source under the MIT License.  See LICENSE file.
+rem #
+rem # =================================================================
+
 rem isolate changes to local environment
 setlocal
 
