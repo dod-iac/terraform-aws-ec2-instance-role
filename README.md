@@ -33,7 +33,24 @@ module "domain_instance_role" {
 }
 ```
 
-For more information see https://docs.aws.amazon.com/directoryservice/latest/admin-guide/launching_instance.html.
+For more information on joining AD domains see https://docs.aws.amazon.com/directoryservice/latest/admin-guide/launching_instance.html.
+
+Creates an IAM role to allow EC2 instance to be managed by EC2 Image Builder.
+
+```hcl
+module "domain_instance_role" {
+  source = "dod-iac/ec2-instance-role/aws"
+
+  allow_image_builder = true
+  name = format("app-%s-image-builder-%s", var.application, var.environment)
+
+  tags  = {
+    Application = var.application
+    Environment = var.environment
+    Automation  = "Terraform"
+  }
+}
+```
 
 ## Terraform Version
 
@@ -70,6 +87,8 @@ No modules.
 | [aws_iam_role_policy_attachment.amazon_ec2_container_service_for_ec2_role](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role_policy_attachment) | resource |
 | [aws_iam_role_policy_attachment.amazon_ssm_directory_service_access](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role_policy_attachment) | resource |
 | [aws_iam_role_policy_attachment.amazon_ssm_managed_instance_core](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role_policy_attachment) | resource |
+| [aws_iam_role_policy_attachment.ec2_instance_profile_for_image_builder](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role_policy_attachment) | resource |
+| [aws_iam_role_policy_attachment.ec2_instance_profile_for_image_builder_ecr_container_builds](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role_policy_attachment) | resource |
 | [aws_iam_policy_document.assume_role_policy](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document) | data source |
 | [aws_partition.current](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/partition) | data source |
 
@@ -78,6 +97,7 @@ No modules.
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
 | <a name="input_allow_ecs"></a> [allow\_ecs](#input\_allow\_ecs) | Allow instance to create or join an ECS cluster. | `bool` | `false` | no |
+| <a name="input_allow_image_builder"></a> [allow\_image\_builder](#input\_allow\_image\_builder) | Allow instance to be managed by EC2 Image Builder. | `bool` | `false` | no |
 | <a name="input_allow_seamless_domain_join"></a> [allow\_seamless\_domain\_join](#input\_allow\_seamless\_domain\_join) | Allow instance to seamlessly join to your AWS Managed Microsoft AD directory. | `bool` | `false` | no |
 | <a name="input_assume_role_policy"></a> [assume\_role\_policy](#input\_assume\_role\_policy) | The assume role policy for the AWS IAM role.  If blank, allows EC2 instances in the account to assume the role. | `string` | `""` | no |
 | <a name="input_name"></a> [name](#input\_name) | The name of the AWS IAM role. | `string` | n/a | yes |
